@@ -12,6 +12,36 @@
   ```bash
   > find /path -type f -mtime +(days)
   ```
+- **Creating ZIP Archives**
+  ```bash
+  > zip -r file.zip /file/path
+  ```
+  This command creates a compressed ZIP archive of all files and subdirectories within the specified directory. The `-r` flag stands for \"recursive,\" meaning it includes all nested files.
+
+- **Creating TAR.GZ Archives**
+  ```bash
+  > tar -zcvf file.tar.gz /file/path
+  ```
+  This command creates a compressed TAR archive with gzip compression. The `-z` enables gzip compression, `-c` writes the output to a file, and `-v` provides verbose output during the archiving process.
+
+- **Creating GZipped Files with Date Suffix**
+  ```bash
+  > gzip -9 -c filename > filename.`date+%Y%m%d`.gz
+  ```
+  This command compresses a single file using maximum compression and appends the current date (YYYYMMDD) to the compressed file's name. This is useful for creating a unique backup file without overwriting the original.
+
+*Note:* Ensure that the destination files do not already exist or that appropriate checks are in place to avoid accidental data loss due to overwrite.
+
+**Explanation of Commands**
+
+1. **ZIP Command**
+   - The `zip -r` command recursively creates a ZIP archive, suitable for distributing software or backing up directories.
+
+2. **TAR Command**
+   - The `tar -zcvf` command is used for creating TAR archives with optional compression. It's useful when you need to compress files without the ZIP format.
+
+3. **GZIP Command**
+   - The `gzip -9` command applies maximum compression, making it ideal for large files or backups. Adding a date suffix helps in keeping track of backup versions over time.
   
 ### Permissions
 - **Change owner of file**:
@@ -105,22 +135,21 @@
   ```
 - When you run `top`, it displays a list of processes along with their status. Pressing 1 will show more details about CPU utilization.
 
--**Identify Dead Processes (Zombies)**:
+-**Identify D state Processes**:
   ```bash
   > ps aux | awk '$8 ~ /^D/{print}'
   ```
   - **`ps aux`**: Displays a snapshot of all processes, including system-wide and per-user processes.
   - **Filtering Dead Processes**: The `awk` command looks for lines where the 8th field (`$8`) starts with 'D', indicating a dead (zombie) process. This command prints the entire line of each zombie process, which includes the user ID, PID, etc.
 
-**Terminate Zombie Processes**:
+**Terminate D state Processes**:
   ```bash
   > ps aux | awk '$8 ~ /^D/{print $2}' | xargs kill -9
   ```
 - **Explanation**:
-  - **Filtering**: The `awk` command filters out only the second field (`$2`), which is the username associated with each zombie process.
-  - **Termination**: The resulting list of usernames is passed to `xargs`, which executes `kill -9` for each username, terminating the corresponding zombie processes.
+  - **Filtering**: The `awk` command filters out only the second field (`$2`), which is the username associated with each D state process.
+  - **Termination**: The resulting list of usernames is passed to `xargs`, which executes `kill -9` for each username, terminating the corresponding D state processes.
 
 #### Important Notes
-- **Zombie Processes**: These are processes that have been terminated but haven't been properly cleaned up, often due to parent processes still running.
 - **`kill -9`**: This signal immediately terminates a process without allowing it to clean up resources, which is useful for resolving resource leaks.
 - **Permissions**: Ensure you have the necessary permissions to execute these commands. Root access may be required.
