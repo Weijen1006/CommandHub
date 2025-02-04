@@ -1,4 +1,5 @@
 ## Linux Commands
+
 ### File Management
 - **Check file system usage**:
   ```bash
@@ -30,18 +31,18 @@
   ```
   This command compresses a single file using maximum compression and appends the current date (YYYYMMDD) to the compressed file's name. This is useful for creating a unique backup file without overwriting the original.
 
-*Note:* Ensure that the destination files do not already exist or that appropriate checks are in place to avoid accidental data loss due to overwrite.
-
-**Explanation of Commands**
-
-1. **ZIP Command**
-   - The `zip -r` command recursively creates a ZIP archive, suitable for distributing software or backing up directories.
-
-2. **TAR Command**
-   - The `tar -zcvf` command is used for creating TAR archives with optional compression. It's useful when you need to compress files without the ZIP format.
-
-3. **GZIP Command**
-   - The `gzip -9` command applies maximum compression, making it ideal for large files or backups. Adding a date suffix helps in keeping track of backup versions over time.
+  *Note:* Ensure that the destination files do not already exist or that appropriate checks are in place to avoid accidental data loss due to overwrite.
+  
+- **Linux vi editor**:
+  ```bash
+  > vi <file-name>
+  ```
+  *Explanation:* A powerful text editor with specific keystrokes:
+  - `i` to enter edit mode.
+  - Esc to go back to command mode.
+  - `:q` to quit vi (only executable in command mode).
+  - `:q!` to quit vi without saving (only executable in command mode).
+  - `:wq` to save and quit vi (only executable in command mode).
   
 ### Permissions
 - **Change owner of file**:
@@ -86,16 +87,6 @@
   ```bash
   > tail -f /var/log/messages
   ```
-- **Linux vi editor**:
-  ```bash
-  > vi <file-name>
-  ```
-  *Explanation:* A powerful text editor with specific keystrokes:
-  - `i` to enter edit mode.
-  - Esc to go back to command mode.
-  - `:q` to quit vi (only executable in command mode).
-  - `:q!` to quit vi without saving (only executable in command mode).
-  - `:wq` to save and quit vi (only executable in command mode).
 
 ### Mounting
 - **Unmount a specific path**:
@@ -127,15 +118,36 @@
   > fdisk -l
   ```
 
-### Process Monitoring and Management
+### Network
+- **Ping Test**:
+  ```bash
+  > ping -c <ping-count> -s <packet-size-byte> <hostname>
+  ```
+- **Display all network interfaces and active network interfaces**:
+  ```bash
+  > ifconfig && ip link show
+  ```
+- **Provide a map of how data on the internet travels from soruce to destination**:
+  ```bash
+  > traceroute <destination-host>
+  ```
 
--**Check Running Processes**:
+### Port Query
+  ```bash
+  > ss -tulpn | grep "<port-number>"
+  > netstat -tuln | grep :<port-number>
+  > lsof -i :<port-number>
+  > nmap -sU -sS -p <port-number> <hostname>
+  ```
+
+### Process Monitoring and Management
+- **Check Running Processes**:
   ```bash
   > top
   ```
 - When you run `top`, it displays a list of processes along with their status. Pressing 1 will show more details about CPU utilization.
 
--**Identify D state Processes**:
+- **Identify D state Processes**:
   ```bash
   > ps aux | awk '$8 ~ /^D/{print}'
   ```
@@ -144,7 +156,7 @@
 
 **Terminate D state Processes**:
   ```bash
-  > ps aux | awk '$8 ~ /^D/{print $2}' | xargs kill -9
+  > ps aux | awk '$8 ~ /^D/{print}' | awk '{print $2}' | xargs kill -9
   ```
 - **Explanation**:
   - **Filtering**: The `awk` command filters out only the second field (`$2`), which is the username associated with each D state process.

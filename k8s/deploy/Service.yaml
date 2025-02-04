@@ -1,0 +1,19 @@
+# This YAML defines a Service resource in Kubernetes to expose an application running within a Deployment.
+# The metadata section provides information about the service, including its name and namespace.
+apiVersion: v1
+kind: Service
+metadata:
+  # Metadata labels and annotations can be added here for additional context
+  name: mysampleservice
+  namespace: mynamespace
+
+spec:
+  # Service specifications define how the service will operate and expose ports
+  selector:
+    # The selector is used to label which pods this service should route traffic to
+    app: mysample
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8000
+      # This means that all traffic on port 80 within the cluster will be redirected to port 8000 on the service's pods

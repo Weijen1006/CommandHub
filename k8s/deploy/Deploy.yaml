@@ -1,0 +1,54 @@
+# Kubernetes Deployment Configuration for "mysample" Application
+apiVersion: apps/v1
+kind: Deployment  # This is a Kubernetes Deployment resource definition
+metadata:
+  name: mysample  # Name of the deployment
+  namespace: mynamespace  # Namespace where this deployment resides
+  labels:
+    app: mysample  # Label used to identify this application
+spec:
+  replicas: 2  # Number of pods to deploy (2 in this case)
+  revisionHistoryLimit: 3  # Maximum number of previous deployments to keep (3 here)
+  selector:
+    matchLabels:
+      app: mysample  # Selector uses this label to manage the deployment
+  template:
+    metadata:
+      labels:
+        app: mysample  # Label applied to each pod
+    spec:
+      containers:
+        - name: mysample  # Name of the container
+          image: myimage:latest  # Image to use for the container
+          imagePullPolicy: Always  # Always pull the latest image
+          livenessProbe:
+            httpGet:
+              path: /health  # Path to health check endpoint
+              port: 8000  # Port where the health check is available
+            initialDelaySeconds: 30  # Initial delay before starting probes (30 seconds)
+            periodSeconds: 30  # Interval for health checks (30 seconds)
+            failureThreshold: 10  # Maximum number of failed health checks before rolling update fails
+          env:
+            - name: MY_ENV  # Environment variable name
+              value: "myvalue"  # Value of the environment variable
+          envFrom:
+            - configMapRef:
+                name: myconfigmap  # Name of the ConfigMap to use
+            - secretRef:
+                name: mysecret  # Name of the Secret to use
+          securityContext:
+            runAsUser: 10001  # Non-root user ID (10001 in this case)
+            allowPrivilegeEscalation: false  # Disallow privilege escalation
+            runAsNonRoot: true  # Ensure the container runs as a non-root user
+          resources:
+            limits:
+              cpu: 100m  # CPU limit for the container
+              memory: 512Mi  # Memory limit for the container
+            requests:
+              cpu: 30m  # CPU request (minimum allocated resources)
+              memory: 100Mi  # Memory request (minimum allocated resources)
+  strategy:
+    type: RollingUpdate  # Deployment strategy type (RollingUpdate in this case)
+    rollingUpdate:
+      maxSurge: 1  # Maximum number of pods that can be healthy while updating
+      maxUnavailable: 1  # Maximum number of pods that can be unavailable during update

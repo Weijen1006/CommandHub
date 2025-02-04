@@ -1,0 +1,26 @@
+# Kubernetes Ingress Configuration for HTTPS with TLS
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tls-example-ingress
+# The name of the Ingress resource, used to identify and manage the network traffic
+spec:
+  # Enables HTTPS by configuring TLS (Transport Layer Security)
+  tls:
+  - hosts:
+      - example.com
+    # TLS certificate domain name mapping for securing connections
+    secretName: testsecret-tls
+  # The name of the TLS secret used to encrypt/decrypt traffic
+  rules:
+  - host: example.com
+    # Matches requests made to 'example.com'
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mysampleservice
+            port:
+              number: 80

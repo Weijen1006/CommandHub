@@ -1,0 +1,15 @@
+# This defines a PodDisruptionBudget (PDB) object that manages disruptions for pods in Kubernetes
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  # Metadata for the PDB, including its name and namespace
+  name: mysample-pdb
+  namespace: mynamespace
+spec:
+  # Specifications for the PDB
+  minAvailable: 1
+    # Minimum number of available pods required to ensure service availability
+  selector:
+    matchLabels:
+      app: mysample
+        # Selector that matches pods labeled with 'app: mysample'
