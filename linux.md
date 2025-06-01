@@ -32,7 +32,7 @@
   This command compresses a single file using maximum compression and appends the current date (YYYYMMDD) to the compressed file's name. This is useful for creating a unique backup file without overwriting the original.
 
   *Note:* Ensure that the destination files do not already exist or that appropriate checks are in place to avoid accidental data loss due to overwrite.
-  
+
 - **Linux vi editor**:
   ```bash
   > vi <file-name>
@@ -43,7 +43,7 @@
   - `:q` to quit vi (only executable in command mode).
   - `:q!` to quit vi without saving (only executable in command mode).
   - `:wq` to save and quit vi (only executable in command mode).
-  
+
 ### Permissions
 - **Change owner of file**:
   ```bash
@@ -130,6 +130,10 @@
 - **Provide a map of how data on the internet travels from soruce to destination**:
   ```bash
   > traceroute <destination-host>
+  ```
+  - **Override DNS resolution**:
+  ```bash
+  > curl -v <hostname>:<port>:<ip_address> <url>
   ```
 
 ### Port Query
